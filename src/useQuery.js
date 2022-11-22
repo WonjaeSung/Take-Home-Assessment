@@ -11,8 +11,9 @@ const useQuery = () => {
     useEffect(()=>{
         const fetchData = async() => {
             const {data} = await axios.get(url);
-            setOccupations(data.occupations.map(job=>({value:job, label:job})))
-            setStates(data.states.map(state=>({value:state.name, label:state.name+", "+state.abbreviation})))
+
+            setOccupations(data.occupations)
+            setStates(data.states)
         }
         //calling Get request
         fetchData()
