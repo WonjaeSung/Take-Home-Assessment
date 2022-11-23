@@ -8,11 +8,8 @@ module.exports = {
       ...defaultTheme.screens,
     },
     extend: {
-      // font:['Inter var', ...defaultTheme.fontFamily.sans],
-      colors:{
-        'primary-color':'#0fa'
-      }
+    
     },
   },
-  plugins: [],
+  plugins: [ require('@tailwindcss/forms')],
 }
