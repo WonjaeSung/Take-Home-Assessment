@@ -2,6 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import useQuery from './useQuery';
 
+
+
 //URL used for Get and Post request
 const url = "https://frontend-take-home.fetchrewards.com/form"
 
@@ -14,59 +16,59 @@ const emptyForm = {
   occupation: '',
   state: '',
 };
-
+  
 const makeInputLabel = (name) =>
-  name[0].toUpperCase() + name.substring(1) + ': ';
+name[0].toUpperCase() + name.substring(1) + ': ';
+
 
 const TextInput = ({ name, placeholder, password, value, onChange }) => (
   <>
-    <label>
-      {makeInputLabel(name)}
-      <input
-        required
-        type={password ? 'password' : 'text'}
-        name={name}
-        value={value}
-        placeholder={placeholder}
-        onChange={onChange}
-        className={inputClassName}
-      />
-    </label>
+    {makeInputLabel(name)}
+    <input
+      required
+      type={password ? 'password' : 'text'}
+      name={name}
+      value={value}
+      placeholder={placeholder}
+      onChange={onChange}
+      className={inputClassName}
+    />
+  </>
+);
+const SelectInput = ({ name, value, onChange }) => (
+  <>
+    {makeInputLabel(name)}
+    <select
+      name={name}
+      onChange={onChange}
+      className={inputClassName}
+      value={value}
+    >
+      {(name === "occupation") ? occupationsOptions : statesOptions}
+    </select>
   </>
 );
 
 
+const statesOptions = states.map(({ name, abbreviation }) => (
+  <option value={name} key={abbreviation}>
+    {name}
+  </option>
+));
+
+const occupationsOptions = occupations.map((value, i) => (
+  <option value={value} key={i}>
+    {value}
+  </option>
+));
+
+
 function App() {
+  
+  const { occupations, states } = useQuery();
 
   //setting up a template for all of the input values from the form
   const [formValue, setFormValue] = useState(emptyForm)
-
-  const { occupations, states } = useQuery();
-
-  const statesOptions = states.map(({ name, abbreviation }) => (
-    <option value={name} key={abbreviation}>
-      {name}
-    </option>
-  ));
-
-  const occupationsOptions = occupations.map((value, i) => (
-    <option value={value} key={i}>
-      {value}
-    </option>
-  ));
-
-  // const SelectInput = ({ name, value, onChange }) => (
-  //   <div>
-  //     <label>
-  //       {makeInputLabel(name)}
-  //       <select
-  //         name={name}
-  //         value={value}
-  //         onChange={onChange}
-  //       />
-  //     </label>
-  //   </div>
-  // );
 
   // event handling for text inputs which are name, email and password
   const handleChange = ({ target: { name, value } }) => {
@@ -75,6 +77,7 @@ function App() {
       [name]: value
     });
   }
+
   //event handling for submitting Post request from form
   const handleSubmit = (event) => {
     axios.post((url), formValue).then(res => {
@@ -95,7 +98,6 @@ function App() {
             <div className="grid grid-cols-6 gap-6">
               <div className="col-span-6 sm:col-span-3">
                 <TextInput
-                  type="text"
                   name="name"
                   value={formValue.name}
                   onChange={handleChange}
@@ -122,30 +124,23 @@ function App() {
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label htmlFor="occupation">
-                  Occupation:
-                </label>
-                <select
+                <SelectInput
                   name="occupation"
+                  value={formValue.occupation}
                   onChange={handleChange}
                   className={inputClassName}
-                >
-                  {occupationsOptions}
-                </select>
+                />
               </div>
 
               <div className="col-span-6 sm:col-span-3">
-                <label htmlFor="state">
-                  State:
-                </label>
-                <select
+                <SelectInput
                   name="state"
+                  value={formValue.state}
                   onChange={handleChange}
                   className={inputClassName}
-                >
-                  {statesOptions}
-                </select>
+                />
               </div>
+
             </div>
           </div>
           <div className="bg-gray-50 px-4 py-3 text-left sm:px-6">
