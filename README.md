@@ -16,8 +16,3 @@ create-react-app, tailwindcss
 
 ---
 
-# Things to add
- 
- Have fun testing and improving it! 😎
-
-
